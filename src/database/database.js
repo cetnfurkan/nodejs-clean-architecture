@@ -3,7 +3,7 @@ const knex = require('knex')
 class Database {
 
     /**
-     * @returns {knex.Knex}
+     * @type {knex.Knex}
      */
     Get() {}
 }

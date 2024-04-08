@@ -1,15 +1,4 @@
 'use strict';
-
-/**
- * Database configuration
- * @class Database
- * @property {string} host - The host name
- * @property {number} port - The port number
- * @property {string} user - The user name
- * @property {string} password - The password
- * @property {string} name - The database name
- * @property {string} extra - The extra configuration
- */
 class Database {
     /**
      * @param {string} host - The host name

@@ -5,8 +5,7 @@ const { Database } = require('./database');
 
 /**
  * Configuration
- * @class Config
- * @property {Server} server - The server configuration
+ * @Description Configuration object for the application
  */
 class Config {
     constructor () {
@@ -25,7 +24,7 @@ function Read() {
 
         return config;
     } catch (e) {
-        console.error(e);
+        throw new Error('Failed to read the configuration file' + e)
     }
 }
 
