@@ -1,32 +1,23 @@
 const express = require('express');
-const app = express();
+const expressWinston = require('express-winston');
+const winston = require('winston');
+const knex = require('knex');
 const Controller = require('../controller');
 const { Config } = require('../config');
 const { Server } = require('./server')
-
-// /**
-//  * Controller initialization
-//  * @param {Config} config - The configuration
-//  */
-// function Init(config) {
-//     app.listen(config.server.port, () => {
-//         console.log(`Server is running on port ${config.server.port}`);
-//     });
-
-//     Controller.Init(config, app);
-// }
 
 class ExpressServer extends Server {
     /**
      * ExpressServer constructor
      * @param {Config} config - The configuration
-     * @constructor
+     * @param {knex.Knex} db - The database connection
      * @returns {Server}
      */
-    constructor (config) {
+    constructor (config, db) {
         super();
-        this.app = app;
+        this.app = express();
         this.config = config;
+        this.db = db;
     }
 
     Start () {
@@ -34,9 +25,19 @@ class ExpressServer extends Server {
             console.log(`Server is running on port ${this.config.server.port}`);
         });
 
+        this.app.use(expressWinston.logger({
+            transports: [
+                new winston.transports.Console()
+            ],
+            format: winston.format.combine(
+                winston.format.colorize(),
+                winston.format.json()
+            )
+        }));
+
         this.app.use(express.json());
 
-        Controller.Init(this.config, app);
+        Controller.Init(this.config, this.app, this.db);
     }
 }
 
