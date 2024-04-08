@@ -1,4 +1,5 @@
 'use strict';
+
 class Server {
     /**
      * @param {number} port - The port number
@@ -10,6 +11,4 @@ class Server {
     }
 }
 
-module.exports = {
-    Server
-};
+module.exports = { Server };

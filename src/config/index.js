@@ -18,6 +18,10 @@ function Read() {
     const config = new Config();
 
     try {
+        if (!fs.existsSync('config.yml')) {
+            throw new Error('The configuration file is missing');
+        }
+
         const file = fs.readFileSync('config.yml', 'utf8');
         const ymlConfig = yaml.load(file);
         Object.assign(config, ymlConfig);

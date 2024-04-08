@@ -2,7 +2,6 @@ const express = require('express');
 const Express = express();
 const knex = require('knex');
 const { Config } = require('../../config');
-const { UserService } = require('../../service/user_service');
 const { UserServiceImpl } = require('../../service/user_service_imp');
 const { CreateUser } = require('./create_user');
 const { UserRepositoryImpl } = require('../../repository/user_repository_impl');
@@ -20,23 +19,22 @@ class UserController {
         this.db = db;
 
         this.userRepository = new UserRepositoryImpl(db);
-        /**
-         * @type {UserService}
-         */
-        this.service = new UserServiceImpl(this.userRepository);
+        this.userService = new UserServiceImpl(this.userRepository);
     }
 
     /**
      * Initialize the controller
      */
     Init() {
-        const router = express.Router();
+        try {
+            const router = express.Router();
 
-        this.app.use('/user', router);
+            router.post('/create', (req, res) => new CreateUser(this.userService).create(req, res));
 
-        const that = this;
-
-        router.post('/create', new CreateUser(that.config, this.app, this.db, this.service).create_user.bind(this));
+            this.app.use('/user', router);
+        } catch (error) {
+            throw new Error('Failed to initialize the user controller', error);
+        }
     }
 }
 
