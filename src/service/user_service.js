@@ -1,15 +1,19 @@
-const { User } = require('../entity/User');
+
+const { UserModel } = require('../dto/model/user');
+const { CreateUserRequest } = require('../dto/request/user');
 
 class UserService {
 
     /**
-     * @param {User} user
-     * @returns {Promise<User>}
+     * @description Create user and return user model
+     * @param {CreateUserRequest} reqDto
+     * @returns {Promise<UserModel>}
      */
-    CreateUser(user) {}
+    CreateUser(reqDto) {}
 
     /**
-     * @returns {Promise<Array<User>>}
+     * @description Get user list and return user model list
+     * @returns {Promise<Array<UserModel>>}
      */
     GetUserList(res) {}
 }

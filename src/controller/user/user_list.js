@@ -1,11 +1,10 @@
-const { User } = require('../../entity/User');
 const { UserService } = require('../../service/user_service');
 const { Response } = require('../../http/response');
 const { ErrorCode } = require('../../http/errors');
 const { HttpError } = require('../../http/http_error');
-const { CreateUserRequest } = require('../../dto/request/user');
+const { UserModel } = require('../../dto/model/user');
 
-class CreateUser {
+class UserList {
     /**
      * CreateUser constructor
      * @param {UserService} userService - The user service
@@ -15,18 +14,17 @@ class CreateUser {
         this.userService = userService;
     }
 
-    async create(req, res) {
+    /**
+     * @description Get user list
+     * @param {Request} req - The request
+     * @param {Response} res - The response
+     * @returns {Promise<Array<UserModel>>}
+     */
+    async user_list(req, res) {
         try {
-            const { username, password } = req.body;
+            const userList = await this.userService.GetUserList();
 
-            if (!username || !password) {
-                return new HttpError(res).httpErrorInfo(ErrorCode.INVALID_PARAMETERS).send();
-            }
-
-            const reqDto = new CreateUserRequest(username, password);
-            const createdUser = await this.userService.CreateUser(reqDto);
-
-            return Response(res, 200, createdUser)
+            return Response(res, 200, userList)
         } catch (error) {
             if (error instanceof HttpError) {
                 return error.send();
@@ -37,4 +35,4 @@ class CreateUser {
     }
 }
 
-module.exports = { CreateUser };
+module.exports = { UserList };

@@ -2,6 +2,7 @@ const express = require('express');
 const expressWinston = require('express-winston');
 const winston = require('winston');
 const knex = require('knex');
+const timeout = require('connect-timeout')
 const Controller = require('../controller');
 const { Config } = require('../config');
 const { Server } = require('./server')
@@ -35,6 +36,7 @@ class ExpressServer extends Server {
             )
         }));
 
+        this.app.use(timeout(this.config.server.requestTimeout || 5000));
         this.app.use(express.json());
 
         Controller.Init(this.config, this.app, this.db);

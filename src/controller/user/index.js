@@ -4,6 +4,7 @@ const knex = require('knex');
 const { Config } = require('../../config');
 const { UserServiceImpl } = require('../../service/user_service_imp');
 const { CreateUser } = require('./create_user');
+const { UserList } = require('./user_list');
 const { UserRepositoryImpl } = require('../../repository/user_repository_impl');
 
 class UserController {
@@ -29,7 +30,8 @@ class UserController {
         try {
             const router = express.Router();
 
-            router.post('/create', (req, res) => new CreateUser(this.userService).create(req, res));
+            router.post('/create', async (req, res) => await new CreateUser(this.userService).create(req, res));
+            router.get('/list', async (req, res) => await new UserList(this.userService).user_list(req, res));
 
             this.app.use('/user', router);
         } catch (error) {
